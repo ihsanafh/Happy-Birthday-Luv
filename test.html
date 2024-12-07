@@ -1,634 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Guess Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: url('images/latar3.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-        :root {
-            --c: red;
-        }
-        .hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; 
-            overflow: hidden;
-            z-index: 0; 
-        }
-        .heart-image {
-            position: absolute;
-            bottom: -150px;
-            width: 50px;
-            height: 50px;
-            aspect-ratio: 1;
-            --_m: radial-gradient(#000 69%, #0000 70%) 84.5%/50%;
-            -webkit-mask-box-image: var(--_m);
-                       mask-border: var(--_m);
-            clip-path: polygon(-42% 0, 50% 91%, 142% 0);
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.8;
-            animation: floatHeart linear infinite;
-            z-index: 1;
-        }
-        @supports not (-webkit-mask-box-image: var(--_m)) { 
-            .heart-image {
-                --_m:
-                    radial-gradient(at 70% 31%, var(--c) 29%, #0000 30%),
-                    radial-gradient(at 30% 31%, var(--c) 29%, #0000 30%),
-                    linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-                -webkit-mask: var(--_m);
-                        mask: var(--_m);
-            }
-        }
-        @keyframes floatHeart {
-            0% {
-                transform: translateY(0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.5);
-                opacity: 0;
-            }
-        }
-        .heart-image:nth-child(odd) {
-            opacity: 0.9;
-        }
-        .heart-image:nth-child(even) {
-            opacity: 0.7;
-        }
-        .heart-image {
-            animation-duration: 6s;
-        }
-        .heart-image:nth-child(odd) {
-            animation-duration: 7s;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firework and Heart Countdown</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
 
-        .heart-image:nth-child(even) {
-            animation-duration: 5s;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .player {
-            border-radius: 20px;
-            padding: 20px;
-            padding-top: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .album-art {
-            width: 150px; /* Ukuran baru */
-            height: 150px; /* Ukuran baru */
-            border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.3);
-            padding: 5px;
-            display: block;
-        }
-        .controls {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .song-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .artist-name {
-            font-size: 16px;
-            color: black;
-        }
-        .playback-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 10px 0;
-        }
-        .playback-controls i {
-            margin: 0 20px;
-        }
-        .fa-circle-pause {
-            margin: 0 15px;
-        }
-        .playback-controls span {
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .progress-bar {
-            width: 200px;
-            margin-left: 5px;
-            margin-right: 10px;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 5px;
-            background: black;
-            outline: none;
-            border-radius: 5px;
-        }
-        .progress-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-        .password-section {
-            border-radius: 20px;
-            margin-left: 20px;
-            padding: 20px;
-            text-align: center;
-            width: 250px;
-        }
-        .guess-text {
-            font-size: 18px;
-        }
-        #password {
-            font-size: 18px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            padding: 5px;
-            text-align: center;
-            width: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid black;
-            border-radius: 15px;
-            outline: none;
-        }
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-        .keypad button {
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            cursor: pointer;
-            border-radius: 10px;
-            outline: none;
-            backdrop-filter: blur(10px);
-            border: 2px solid black;
-        }
-        .keypad button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .content {
-            position: relative; /* Tambahkan ini */
-            z-index: 1; /* Tambahkan ini */
-            background-color: rgba(255, 255, 255, 0.3);
-            padding-left: 8px;
-            padding-right: 20px;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            gap: 0px;
-        }
-        .progress span {
-            display: inline-block;
-            width: 50px;
-            text-align: center;
-        }
-        @media (max-width: 650px) {
-            .container {
-                flex-direction: column;
-                justify-content: center; /* Konten di tengah secara vertikal */
-                align-items: center; /* Konten di tengah secara horizontal */
-                padding: 0 10px; /* Tambahkan padding kiri-kanan */
-            }
-        
-            .content {
-                flex-direction: column; /* Ubah posisi menjadi kolom */
-                align-items: center;
-                width: 100%;
-            }
-            .album-art {
-                width: 80px;
-                height: 80px;
-            }
-            .password-section {
-                width: 100%;
-                max-width: 400px; /* Batasi lebar maksimal */
-                margin-top: 20px; /* Jarak antara music player dan password */
-                padding: 0 10px; /* Tambahkan padding kiri-kanan */
-            }
-        }
-        @media (max-width: 400px) {
-            .album-art {
-                width: 60px;
-                height: 60px;
-            }
-            .password-section {
-                width: 100%;
-                max-width: 350px; /* Sesuaikan lebar */
-                padding: 0 5px; /* Kurangi padding pada layar kecil */
-            }
-        }
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            visibility: hidden; /* Tersembunyi secara default */
-            opacity: 0;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            z-index: 1000; /* Di atas semua konten */
-        }
-        .popup-overlay.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        .popup {
-            background: #fff;
-            padding: 30px 40px;
-            border-radius: 15px;
-            text-align: center;
-            position: relative;
-            max-width: 90%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            animation: popupFadeIn 0.5s ease;
-        }
-        @keyframes popupFadeIn {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-        .popup h2 {
-            font-size: 24px;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .popup p {
-            font-size: 18px;
-            margin-top: 5px;
-            color: #555;
-            background-color: #fff;
-            border: 2px solid red;
-            padding: 10px 10px;
-            border-radius: 8px;
-            display: inline-block;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .popup p:hover {
-            background-color: red;
-            color: #fff;
-        }
-        .popup .close-btn {
-            font-size: 80px;
-            color: red;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            display: inline-block;
-            margin-bottom: 5px;
-            animation: spin 3s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes rotateX {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .popup .close-btn.animate {
-            animation: rotateX 0.6s linear;
-        }
-        .popup .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    </style>
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .heart-container {
+      display: none;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 3s ease-in-out forwards;
+    }
+
+    .heart {
+      position: relative;
+      width: 500px; /* Lebih besar */
+      height: 500px; /* Lebih besar */
+    }
+
+    .heart .flower {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: transparent;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: bloom 3s ease-in-out forwards;
+    }
+
+    .countdown {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    @keyframes bloom {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-    <div class="hearts-container">
-        <!-- Foto-foto hati akan ditambahkan secara dinamis melalui JavaScript -->
-    </div>
-    <div class="container">
-        <div class="content">
-            <div class="player">
-                <img src="images/cantik1.jpg" alt="Scenic View" class="album-art">
-                <audio id="audio" preload="metadata" autoplay loop>
-                    <source src="songs/Paul-Partohap-BEAUTiFUL.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-                <div class="controls">
-                    <p class="song-title">BEAUTiFUL</p>
-                    <p class="artist-name">Paul Partohap</p>
-                    <div class="playback-controls">
-                        <i class="fa-solid fa-backward-step fa-2x" id="prev"></i>
-                        <i class="fa-solid fa-circle-play fa-2x" id="play-pause"></i>
-                        <i class="fa-solid fa-forward-step fa-2x" id="next"></i>
-                    </div>
-                    <div class="progress">
-                        <span id="current-time">00:00</span>
-                        <input type="range" min="0" max="100" value="0" class="progress-bar" id="progress-bar">
-                        <span id="total-duration">00:00</span>
-                    </div>
-                </div>  
-            </div>
-            <div class="password-section">
-                <p class="guess-text" style="font-weight: 600;">Hayoo!!!</p>
-                <p class="guess-text" style="font-weight: 600;">Tebak Passwordnya!</p>
-                <input type="text" id="password" readonly style="font-weight: bold;">
-                <div class="keypad">
-                    <button>7</button><button>8</button><button>9</button>
-                    <button>4</button><button>5</button><button>6</button>
-                    <button>1</button><button>2</button><button>3</button>
-                    <button>C</button><button>0</button><button>✔</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="popup-overlay" id="popup-overlay">
-        <div class="popup">
-            <div class="content">
-                <h2>Tettottt!!! Kamuu salahh!!</h2>
-                <div class="close-btn" id="close-popup">&times;</div>
-                <p id="try-again">Try Again</p>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const audio = document.getElementById("audio");
-            const playPauseButton = document.getElementById("play-pause");
-            const prevButton = document.getElementById("prev");
-            const nextButton = document.getElementById("next");
-            const songTitle = document.querySelector(".song-title");
-            const artistName = document.querySelector(".artist-name");
-            const albumArt = document.querySelector(".album-art");
-            const progressBar = document.getElementById("progress-bar");
-            const currentTimeDisplay = document.getElementById("current-time");
-            const totalDurationDisplay = document.getElementById("total-duration");
+  <canvas id="firework"></canvas>
+  <div class="heart-container" id="heartContainer">
+    <div class="heart" id="heart"></div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+  <script>
+    // Firework Animation
+    const canvas = document.getElementById('firework');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-            let currentSongIndex = 0;
-            let isPlaying = false;
-            const songs = [
-                {
-                    title: "BEAUTiFUL",
-                    src: "songs/Paul-Partohap-BEAUTiFUL.mp3",
-                    artist: "Paul Partohap",
-                    cover: "images/cantik1.jpg"
-                },
-                {
-                    title: "Favorite Girl",
-                    src: "songs/justin-bieber-favorite-girl.mp3",
-                    artist: "Justin Bieber",
-                    cover: "images/cantik2.jpg"
-                },
-                {
-                    title: "Penjaga Hati",
-                    src: "songs/Nadhif-Basalamah-Penjaga-Hati.mp3",
-                    artist: "Nadhif Basalamah",
-                    cover: "images/cantik3.jpg"
-                }
-            ];
+    const fireworks = [];
+    const colors = ['#ff0044', '#44ff00', '#0044ff', '#ffff00', '#ff00ff'];
 
-            loadSong(currentSongIndex);
+    function Firework(x, y) {
+      this.x = canvas.width / 2;
+      this.y = canvas.height;
+      this.targetX = x;
+      this.targetY = y;
+      this.radius = Math.random() * 2 + 2;
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      this.dx = (this.targetX - this.x) / 30;
+      this.dy = (this.targetY - this.y) / 30;
+      this.exploded = false;
+      this.particles = [];
+    }
 
-            function loadSong(index) {
-                const song = songs[index];
-                audio.src = song.src;
-                songTitle.textContent = song.title;
-                artistName.textContent = song.artist;
-                albumArt.src = song.cover;
-                audio.load();
-            }
+    Firework.prototype.update = function () {
+      if (!this.exploded) {
+        this.x += this.dx;
+        this.y += this.dy;
+        if (Math.abs(this.x - this.targetX) < 5 && Math.abs(this.y - this.targetY) < 5) {
+          this.exploded = true;
+          this.createParticles();
+        }
+      } else {
+        this.particles.forEach((particle) => particle.update());
+      }
+    };
 
-            function playSong() {
-                audio.play();
-                isPlaying = true;
-                playPauseButton.classList.remove("fa-circle-play");
-                playPauseButton.classList.add("fa-circle-pause");
-            }
+    Firework.prototype.createParticles = function () {
+      for (let i = 0; i < 30; i++) {
+        this.particles.push(new Particle(this.targetX, this.targetY, this.color));
+      }
+    };
 
-            function pauseSong() {
-                audio.pause();
-                isPlaying = false;
-                playPauseButton.classList.remove("fa-circle-pause");
-                playPauseButton.classList.add("fa-circle-play");
-            }
+    Firework.prototype.draw = function () {
+      if (!this.exploded) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      } else {
+        this.particles.forEach((particle) => particle.draw());
+      }
+    };
 
-            function togglePlayPause() {
-                if (isPlaying) {
-                    pauseSong();
-                } else {
-                    playSong();
-                }
-            }
+    function Particle(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.radius = Math.random() * 2 + 1;
+      this.color = color;
+      this.dx = Math.random() * 4 - 2;
+      this.dy = Math.random() * 4 - 2;
+      this.life = 50;
+    }
 
-            function nextSong() {
-                currentSongIndex = (currentSongIndex + 1) % songs.length;
-                loadSong(currentSongIndex);
-                playSong();
-            }
+    Particle.prototype.update = function () {
+      this.x += this.dx;
+      this.y += this.dy;
+      this.life -= 1;
+    };
 
-            // Fungsi untuk lagu sebelumnya
-            function prevSong() {
-                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-                loadSong(currentSongIndex);
-                playSong();
-            }
+    Particle.prototype.draw = function () {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.closePath();
+    };
 
-            // Update progress bar dan waktu saat audio diputar
-            audio.addEventListener("timeupdate", updateProgressBar);
+    function animateFireworks() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Update total durasi saat metadata dimuat
-            audio.addEventListener("loadedmetadata", () => {
-                const duration = formatTime(audio.duration);
-                totalDurationDisplay.textContent = duration;
-                progressBar.max = Math.floor(audio.duration);
-            });
+      fireworks.forEach((firework, index) => {
+        firework.update();
+        firework.draw();
 
-            // Fungsi untuk memperbarui progress bar dan waktu
-            function updateProgressBar() {
-                if (audio.duration) {
-                    progressBar.value = Math.floor(audio.currentTime);
-                    currentTimeDisplay.textContent = formatTime(audio.currentTime);
-                }
-            }
+        if (firework.particles.length === 0 && firework.exploded) {
+          fireworks.splice(index, 1);
+        }
+      });
 
-            // Fungsi untuk memformat waktu
-            function formatTime(time) {
-                const minutes = Math.floor(time / 60);
-                const seconds = Math.floor(time % 60);
-                const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-                return formattedTime;
-            }
+      if (fireworks.length > 0) {
+        requestAnimationFrame(animateFireworks);
+      } else {
+        showHeart();
+      }
+    }
 
-            // Event listener untuk play/pause button
-            playPauseButton.addEventListener("click", togglePlayPause);
+    function launchFireworks() {
+      let count = 0;
+      const interval = setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * (canvas.height / 2);
+        fireworks.push(new Firework(x, y));
+        count++;
+        if (count > 10) {
+          clearInterval(interval);
+          animateFireworks();
+        }
+      }, 500);
+    }
 
-            // Event listener untuk next button
-            nextButton.addEventListener("click", nextSong);
+    launchFireworks();
 
-            // Event listener untuk prev button
-            prevButton.addEventListener("click", prevSong);
+    // Heart Animation
+    function showHeart() {
+      document.getElementById('heartContainer').style.display = 'flex';
+      const heart = document.getElementById('heart');
+      const heartPoints = 200; // Lebih banyak titik
 
-            // Event listener untuk progress bar (seek)
-            progressBar.addEventListener("input", function () {
-                audio.currentTime = this.value;
-                updateProgressBar();
-            });
+      for (let i = 0; i < heartPoints; i++) {
+        const angle = (Math.PI * 2 * i) / heartPoints;
+        const x = 250 + 200 * Math.sin(angle) ** 3;
+        const y = 250 - (150 * Math.cos(angle) - 60 * Math.cos(2 * angle) - 30 * Math.cos(3 * angle) - 15 * Math.cos(4 * angle));
 
-            // Event listener saat lagu selesai
-            audio.addEventListener("ended", nextSong);
-        });
-    </script>
+        const flower = document.createElement('div');
+        flower.classList.add('flower');
+        flower.style.left = `${x}px`;
+        flower.style.top = `${y}px`;
+        flower.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        heart.appendChild(flower);
+      }
 
-    <!-- Skrip Password Guess (Jika Diperlukan) -->
-    <script>
-        const passwordField = document.getElementById('password');
-        const buttons = document.querySelectorAll('.keypad button');
-        const popupOverlay = document.getElementById('popup-overlay');
-        const closePopupButton = document.getElementById('close-popup');
-        const tryAgainButton = document.getElementById('try-again');
+      const flowers = document.querySelectorAll('.flower');
+      flowers.forEach((flower, index) => {
+        setTimeout(() => {
+          flower.style.transform = 'scale(1)';
+        }, index * 20);
+      });
 
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const value = button.textContent;
-                
-                if (value === 'C') {
-                    passwordField.value = '';
-                } else if (value === '✔') {
-                    if (passwordField.value === '020922') {
-                        // Jika password benar, arahkan ke index.html
-                        window.location.href = 'index.html';
-                    } else {
-                        // Menampilkan popup jika password salah
-                        popupOverlay.classList.add('active');
-                        passwordField.value = '';
-                    }
-                } else {
-                    if (passwordField.value.length < 6) {
-                        passwordField.value += value;
-                    }
-                }
-            });
-        });
+      startCountdown();
+    }
 
-        // Fungsi untuk menutup popup
-        closePopupButton.addEventListener('click', () => {
-            // Menambahkan animasi pada tombol X
-            closePopupButton.classList.add('animate');
-            
-            // Menunggu animasi selesai sebelum menutup popup
-            setTimeout(() => {
-                popupOverlay.classList.remove('active');
-                closePopupButton.classList.remove('animate');
-            }, 600); // Sesuaikan durasi dengan animasi CSS
-        });
+    // Countdown
+    function startCountdown() {
+      const countdown = document.getElementById('countdown');
+      const targetDate = new Date();
+      targetDate.setDate(targetDate.getDate() + 11722);
 
-        // Fungsi untuk tombol "Try Again"
-        tryAgainButton.addEventListener('click', () => {
-            // Menutup popup ketika "Try Again" diklik
-            popupOverlay.classList.remove('active');
-        });
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
 
-        // Menutup popup ketika klik di luar popup
-        popupOverlay.addEventListener('click', (e) => {
-            if (e.target === popupOverlay) {
-                closePopupButton.click();
-            }
-        });
-    </script>
-
-    <!-- Skrip untuk animasi foto berbentuk hati -->
-    <script>
-        const heartsContainer = document.querySelector('.hearts-container');
-
-        // Daftar gambar wajah berbentuk hati
-        const heartImages = [
-            'images/cantik1.jpg',
-            'images/cantik2.jpg',
-            'images/cantik3.jpg',
-            // Tambahkan lebih banyak gambar sesuai kebutuhan
-        ];
-
-        function createHeart() {
-            const heart = document.createElement('img');
-            heart.classList.add('heart-image');
-            
-            // Pilih gambar secara acak dari daftar
-            const imgIndex = Math.floor(Math.random() * heartImages.length);
-            heart.src = heartImages[imgIndex];
-            
-            // Posisi horizontal acak
-            heart.style.left = Math.random() * 100 + 'vw';
-            
-            // Ukuran hati acak antara 30px hingga 60px
-            const size = Math.random() * 30 + 30;
-            heart.style.width = `${size}px`;
-            heart.style.height = `${size}px`;
-            
-            // Rotasi acak
-            const rotation = Math.random() * 360;
-            heart.style.transform = `rotate(${rotation}deg)`;
-            
-            // Durasi animasi acak antara 5s hingga 8s
-            const duration = Math.random() * 3 + 5;
-            heart.style.animationDuration = `${duration}s`;
-            
-            // Delay animasi acak untuk distribusi yang lebih merata
-            const delay = Math.random() * 3;
-            heart.style.animationDelay = `${delay}s`;
-            
-            // Tambahkan hati ke container
-            heartsContainer.appendChild(heart);
-            
-            // Hapus hati setelah animasi selesai untuk menghemat memori
-            heart.addEventListener('animationend', () => {
-                heart.remove();
-            });
+        if (diff <= 0) {
+          countdown.textContent = 'Time’s up!';
+          return;
         }
 
-        // Buat hati setiap 300 milidetik
-        setInterval(createHeart, 700);
-    </script>
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        countdown.textContent = `${days} days ${hours} hours ${minutes} minutes ${seconds} seconds`;
+      }
+
+      setInterval(updateCountdown, 1000);
+    }
+  </script>
 </body>
 </html>

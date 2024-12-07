@@ -1,5 +1,5 @@
 const title = document.querySelector('.title')
-const text1 = 'Hai Kamu!!, Liat Iniii...!!'.split('')
+const text1 = 'Hai Kamu!!, Happy Birthday!!'.split('')
 const text2 = 'I Have Something For You<3'.split('')
 
 // Membuat elemen div untuk baris pertama

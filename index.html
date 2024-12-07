@@ -1,37 +1,650 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="images/gift.png" type="image/x-icon">
-  <link rel="stylesheet" href="css/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/gift.png" type="image/x-icon">
+    <title>Happy Birthday!!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('images/latar3.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        :root {
+            --c: red;
+        }
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            overflow: hidden;
+            z-index: 0; 
+        }
+        .heart-image {
+            position: absolute;
+            bottom: -150px;
+            width: 50px;
+            height: 50px;
+            aspect-ratio: 1;
+            --_m: radial-gradient(#000 69%, #0000 70%) 84.5%/50%;
+            -webkit-mask-box-image: var(--_m);
+                       mask-border: var(--_m);
+            clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            animation: floatHeart linear infinite;
+            z-index: 1;
+        }
+        @supports not (-webkit-mask-box-image: var(--_m)) { 
+            .heart-image {
+                --_m:
+                    radial-gradient(at 70% 31%, var(--c) 29%, #0000 30%),
+                    radial-gradient(at 30% 31%, var(--c) 29%, #0000 30%),
+                    linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+                -webkit-mask: var(--_m);
+                        mask: var(--_m);
+            }
+        }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+        .heart-image:nth-child(odd) {
+            opacity: 0.9;
+        }
+        .heart-image:nth-child(even) {
+            opacity: 0.7;
+        }
+        .heart-image {
+            animation-duration: 6s;
+        }
+        .heart-image:nth-child(odd) {
+            animation-duration: 7s;
+        }
 
-  <!-- Document Title -->
-  <title>I Have Something</title>
+        .heart-image:nth-child(even) {
+            animation-duration: 5s;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .player {
+            border-radius: 20px;
+            padding: 20px;
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .album-art {
+            width: 150px; /* Ukuran baru */
+            height: 150px; /* Ukuran baru */
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            padding: 5px;
+            display: block;
+        }
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .song-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .artist-name {
+            font-size: 16px;
+            color: black;
+        }
+        .playback-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .playback-controls i {
+            margin: 0 20px;
+        }
+        .fa-circle-pause {
+            margin: 0 15px;
+        }
+        .playback-controls span {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-bar {
+            width: 200px;
+            margin-left: 5px;
+            margin-right: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 5px;
+            background: black;
+            outline: none;
+            border-radius: 5px;
+        }
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+        }
+        .password-section {
+            border-radius: 20px;
+            margin-left: 20px;
+            padding: 20px;
+            text-align: center;
+            width: 250px;
+        }
+        .guess-text {
+            font-size: 18px;
+        }
+        #password {
+            font-size: 18px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 5px;
+            text-align: center;
+            width: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid black;
+            border-radius: 15px;
+            outline: none;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        .keypad button {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            outline: none;
+            backdrop-filter: blur(10px);
+            border: 2px solid black;
+        }
+        .keypad button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .content {
+            position: relative; /* Tambahkan ini */
+            z-index: 1; /* Tambahkan ini */
+            background-color: rgba(255, 255, 255, 0.3);
+            padding-left: 8px;
+            padding-right: 20px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            gap: 0px;
+        }
+        .progress span {
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+        }
+        @media (max-width: 650px) {
+            .container {
+                flex-direction: column;
+                justify-content: center; /* Konten di tengah secara vertikal */
+                align-items: center; /* Konten di tengah secara horizontal */
+                padding: 0 10px; /* Tambahkan padding kiri-kanan */
+            }
+        
+            .content {
+                flex-direction: column; /* Ubah posisi menjadi kolom */
+                align-items: center;
+                width: 100%;
+            }
+            .album-art {
+                width: 80px;
+                height: 80px;
+            }
+            .password-section {
+                width: 100%;
+                max-width: 400px; /* Batasi lebar maksimal */
+                margin-top: 20px; /* Jarak antara music player dan password */
+                padding: 0 10px; /* Tambahkan padding kiri-kanan */
+            }
+        }
+        @media (max-width: 400px) {
+            .album-art {
+                width: 60px;
+                height: 60px;
+            }
+            .password-section {
+                width: 100%;
+                max-width: 350px; /* Sesuaikan lebar */
+                padding: 0 5px; /* Kurangi padding pada layar kecil */
+            }
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden; /* Tersembunyi secara default */
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000; /* Di atas semua konten */
+        }
+        .popup-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .popup {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: popupFadeIn 0.5s ease;
+        }
+        @keyframes popupFadeIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .popup h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .popup p {
+            font-size: 18px;
+            margin-top: 5px;
+            color: #555;
+            background-color: #fff;
+            border: 2px solid red;
+            padding: 10px 10px;
+            border-radius: 8px;
+            display: inline-block;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .popup p:hover {
+            background-color: red;
+            color: #fff;
+        }
+        .popup .close-btn {
+            font-size: 80px;
+            color: red;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            display: inline-block;
+            margin-bottom: 5px;
+            animation: spin 3s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateX {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .popup .close-btn.animate {
+            animation: rotateX 0.6s linear;
+        }
+        .popup .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
 </head>
-
 <body>
-  <iframe src="audio.html" style="display:none;"></iframe>
-  <!-- Background -->
-  <div class="night"></div>
+    <div class="hearts-container">
+        <!-- Foto-foto hati akan ditambahkan secara dinamis melalui JavaScript -->
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="player">
+                <img src="images/cantik1.jpg" alt="Scenic View" class="album-art">
+                <audio id="audio" preload="metadata" autoplay loop>
+                    <source src="songs/Paul-Partohap-BEAUTiFUL.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="controls">
+                    <p class="song-title">BEAUTiFUL</p>
+                    <p class="artist-name">Paul Partohap</p>
+                    <div class="playback-controls">
+                        <i class="fa-solid fa-backward-step fa-2x" id="prev"></i>
+                        <i class="fa-solid fa-circle-play fa-2x" id="play-pause"></i>
+                        <i class="fa-solid fa-forward-step fa-2x" id="next"></i>
+                    </div>
+                    <div class="progress">
+                        <span id="current-time">00:00</span>
+                        <input type="range" min="0" max="100" value="0" class="progress-bar" id="progress-bar">
+                        <span id="total-duration">00:00</span>
+                    </div>
+                </div>  
+            </div>
+            <div class="password-section">
+                <p class="guess-text" style="font-weight: 600;">Hayoo!!!</p>
+                <p class="guess-text" style="font-weight: 600;">Tebak Passwordnya!</p>
+                <input type="text" id="password" readonly style="font-weight: bold;">
+                <div class="keypad">
+                    <button>7</button><button>8</button><button>9</button>
+                    <button>4</button><button>5</button><button>6</button>
+                    <button>1</button><button>2</button><button>3</button>
+                    <button>C</button><button>0</button><button>✔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup">
+            <div class="content">
+                <h2>Tettottt!!! Kamuu salahh!!</h2>
+                <div class="close-btn" id="close-popup">&times;</div>
+                <p id="try-again">Try Again</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const audio = document.getElementById("audio");
+            const playPauseButton = document.getElementById("play-pause");
+            const prevButton = document.getElementById("prev");
+            const nextButton = document.getElementById("next");
+            const songTitle = document.querySelector(".song-title");
+            const artistName = document.querySelector(".artist-name");
+            const albumArt = document.querySelector(".album-art");
+            const progressBar = document.getElementById("progress-bar");
+            const currentTimeDisplay = document.getElementById("current-time");
+            const totalDurationDisplay = document.getElementById("total-duration");
 
-  <!-- Title -->
-  <h1 class="title"></h1>
+            let currentSongIndex = 0;
+            let isPlaying = false;
+            const songs = [
+                {
+                    title: "Happy Birthday",
+                    src: "songs/SelamatUlangTahun.mp3",
+                    artist: "Selamat Ulang Tahun Yaa<3",
+                    cover: "images/cantikk.jpeg"
+                },
+                {
+                    title: "Magic",
+                    src: "songs/Lyla-Magic.m4a",
+                    artist: "Lyla",
+                    cover: "images/cantik1.jpg"
+                },
+                {
+                    title: "BEAUTiFUL",
+                    src: "songs/Paul-Partohap-BEAUTiFUL.mp3",
+                    artist: "Paul Partohap",
+                    cover: "images/cantik.jpeg"
+                },
+                {
+                    title: "Favorite Girl",
+                    src: "songs/justin-bieber-favorite-girl.mp3",
+                    artist: "Justin Bieber",
+                    cover: "images/cantik2.jpg"
+                },
+                {
+                    title: "Penjaga Hati",
+                    src: "songs/Nadhif-Basalamah-Penjaga-Hati.mp3",
+                    artist: "Nadhif Basalamah",
+                    cover: "images/cantik3.jpg"
+                }
+            ];
 
-  <!-- Button -->
-  <div style="position: absolute; top: 60vh; width: 100%; display: flex; justify-content: center;">
-    <a href="flower.html" class="btn">
-      <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1" class="sparkle">
-        <path
-          d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
-        </path>
-      </svg>
+            loadSong(currentSongIndex);
 
-      <span class="text">Open</span>
-    </a>
-  </div>
+            function loadSong(index) {
+                const song = songs[index];
+                audio.src = song.src;
+                songTitle.textContent = song.title;
+                artistName.textContent = song.artist;
+                albumArt.src = song.cover;
+                audio.load();
+            }
 
-  <script src="js/index.js"></script>
+            function playSong() {
+                audio.play();
+                isPlaying = true;
+                playPauseButton.classList.remove("fa-circle-play");
+                playPauseButton.classList.add("fa-circle-pause");
+            }
+
+            function pauseSong() {
+                audio.pause();
+                isPlaying = false;
+                playPauseButton.classList.remove("fa-circle-pause");
+                playPauseButton.classList.add("fa-circle-play");
+            }
+
+            function togglePlayPause() {
+                if (isPlaying) {
+                    pauseSong();
+                } else {
+                    playSong();
+                }
+            }
+
+            function nextSong() {
+                currentSongIndex = (currentSongIndex + 1) % songs.length;
+                loadSong(currentSongIndex);
+                playSong();
+            }
+
+            // Fungsi untuk lagu sebelumnya
+            function prevSong() {
+                currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                loadSong(currentSongIndex);
+                playSong();
+            }
+
+            // Update progress bar dan waktu saat audio diputar
+            audio.addEventListener("timeupdate", updateProgressBar);
+
+            // Update total durasi saat metadata dimuat
+            audio.addEventListener("loadedmetadata", () => {
+                const duration = formatTime(audio.duration);
+                totalDurationDisplay.textContent = duration;
+                progressBar.max = Math.floor(audio.duration);
+            });
+
+            // Fungsi untuk memperbarui progress bar dan waktu
+            function updateProgressBar() {
+                if (audio.duration) {
+                    progressBar.value = Math.floor(audio.currentTime);
+                    currentTimeDisplay.textContent = formatTime(audio.currentTime);
+                }
+            }
+
+            // Fungsi untuk memformat waktu
+            function formatTime(time) {
+                const minutes = Math.floor(time / 60);
+                const seconds = Math.floor(time % 60);
+                const formattedTime = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+                return formattedTime;
+            }
+
+            // Event listener untuk play/pause button
+            playPauseButton.addEventListener("click", togglePlayPause);
+
+            // Event listener untuk next button
+            nextButton.addEventListener("click", nextSong);
+
+            // Event listener untuk prev button
+            prevButton.addEventListener("click", prevSong);
+
+            // Event listener untuk progress bar (seek)
+            progressBar.addEventListener("input", function () {
+                audio.currentTime = this.value;
+                updateProgressBar();
+            });
+
+            // Event listener saat lagu selesai
+            audio.addEventListener("ended", nextSong);
+        });
+    </script>
+
+    <!-- Skrip Password Guess (Jika Diperlukan) -->
+    <script>
+        const passwordField = document.getElementById('password');
+        const buttons = document.querySelectorAll('.keypad button');
+        const popupOverlay = document.getElementById('popup-overlay');
+        const closePopupButton = document.getElementById('close-popup');
+        const tryAgainButton = document.getElementById('try-again');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const value = button.textContent;
+                
+                if (value === 'C') {
+                    passwordField.value = '';
+                } else if (value === '✔') {
+                    if (passwordField.value === '020922') {
+                        // Jika password benar, arahkan ke index.html
+                        window.location.href = 'home.html';
+                    } else {
+                        // Menampilkan popup jika password salah
+                        popupOverlay.classList.add('active');
+                        passwordField.value = '';
+                    }
+                } else {
+                    if (passwordField.value.length < 6) {
+                        passwordField.value += value;
+                    }
+                }
+            });
+        });
+
+        // Fungsi untuk menutup popup
+        closePopupButton.addEventListener('click', () => {
+            // Menambahkan animasi pada tombol X
+            closePopupButton.classList.add('animate');
+            
+            // Menunggu animasi selesai sebelum menutup popup
+            setTimeout(() => {
+                popupOverlay.classList.remove('active');
+                closePopupButton.classList.remove('animate');
+            }, 600); // Sesuaikan durasi dengan animasi CSS
+        });
+
+        // Fungsi untuk tombol "Try Again"
+        tryAgainButton.addEventListener('click', () => {
+            // Menutup popup ketika "Try Again" diklik
+            popupOverlay.classList.remove('active');
+        });
+
+        // Menutup popup ketika klik di luar popup
+        popupOverlay.addEventListener('click', (e) => {
+            if (e.target === popupOverlay) {
+                closePopupButton.click();
+            }
+        });
+    </script>
+
+    <!-- Skrip untuk animasi foto berbentuk hati -->
+    <script>
+        const heartsContainer = document.querySelector('.hearts-container');
+
+        // Daftar gambar wajah berbentuk hati
+        const heartImages = [
+            'images/cantik1.jpg',
+            'images/cantik.jpeg',
+            'images/cantik2.jpg',
+            'images/cantik3.jpg',
+            'images/cantikk.jpeg',
+            // Tambahkan lebih banyak gambar sesuai kebutuhan
+        ];
+
+        function createHeart() {
+            const heart = document.createElement('img');
+            heart.classList.add('heart-image');
+            
+            // Pilih gambar secara acak dari daftar
+            const imgIndex = Math.floor(Math.random() * heartImages.length);
+            heart.src = heartImages[imgIndex];
+            
+            // Posisi horizontal acak
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Ukuran hati acak antara 30px hingga 60px
+            const size = Math.random() * 30 + 30;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            // Rotasi acak
+            const rotation = Math.random() * 360;
+            heart.style.transform = `rotate(${rotation}deg)`;
+            
+            // Durasi animasi acak antara 5s hingga 8s
+            const duration = Math.random() * 3 + 5;
+            heart.style.animationDuration = `${duration}s`;
+            
+            // Delay animasi acak untuk distribusi yang lebih merata
+            const delay = Math.random() * 3;
+            heart.style.animationDelay = `${delay}s`;
+            
+            // Tambahkan hati ke container
+            heartsContainer.appendChild(heart);
+            
+            // Hapus hati setelah animasi selesai untuk menghemat memori
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        // Buat hati setiap 300 milidetik
+        setInterval(createHeart, 700);
+    </script>
 </body>
-
 </html>

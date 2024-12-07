@@ -1,271 +1,37 @@
-<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Password Guess Page</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="images/gift.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/index.css">
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: url('images/latar3.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .player {
-            border-radius: 20px;
-            padding: 20px;
-            padding-top: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .album-art {
-            width: 150px;
-            height: 150px;
-            border-radius: 10px;
-        }
-
-        .controls {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .song-title {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .artist-name {
-            font-size: 16px;
-            color: black;
-        }
-
-        .playback-controls {
-            display: flex;
-            justify-content: center; /* Mengatur semua ikon ke tengah */
-            align-items: center;
-            margin: 10px 0;
-        }
-        
-        .playback-controls i {
-            margin: 0 20px; /* Memberikan jarak horizontal antar ikon */
-        }
-        
-        .fa-circle-pause {
-            margin: 0 15px; /* Memberikan jarak lebih besar untuk ikon play-pause */
-        }
-
-        .playback-controls span {
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .progress {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .progress-bar {
-            width: 200px;
-            margin-left: 5px;
-            margin-right: 10px;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 5px;
-            background: black; /* Mengubah warna menjadi hitam */
-            outline: none;
-            border-radius: 5px;
-        }
-
-        .progress-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-
-        .password-section {
-            border-radius: 20px;
-            margin-left: 20px;
-            padding: 20px;
-            text-align: center;
-            width: 250px;
-        }
-
-        .guess-text {
-            font-size: 18px;
-        }
-
-        #password {
-            font-size: 18px;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            padding: 5px;
-            text-align: center;
-            width: 200px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid black;
-            border-radius: 15px;
-            outline: none;
-        }
-
-        .keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .keypad button {
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            cursor: pointer;
-            border-radius: 10px;
-            outline: none;
-            backdrop-filter: blur(10px);
-            border: 2px solid black;
-        }
-
-        .keypad button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .content {
-            background-color: rgba(255, 255, 255, 0.3); /* White transparent background */
-            padding-left: 8px;
-            padding-right: 20px;
-            padding-top: 20px;
-            padding-bottom: 20px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: row; /* Display player and password section side by side */
-            align-items: flex-start;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            gap: 0px; /* Space between player and password section */
-        }
-
-        /* Memberikan lebar tetap pada elemen waktu agar tidak berubah */
-        .progress span {
-            display: inline-block;
-            width: 50px; /* Lebar tetap untuk elemen waktu */
-            text-align: center;
-        }
-    </style>
+  <!-- Document Title -->
+  <title>Happy Birthday!!</title>
 </head>
+
 <body>
-    <div class="container">
-        <div class="content">
-            <div class="player">
-                <img src="images/cantik1.jpg" alt="Scenic View" class="album-art" style="background-color: rgba(255, 255, 255, 0.3); padding: 10px; border-radius: 15px; display: block; border-radius: 15px;">
-                <div class="controls">
-                    <p class="song-title">BEAUTiFUL</p>
-                    <p class="artist-name">Paul Partohap</p>
-                    <div class="playback-controls">
-                        <i class="fa-solid fa-backward-step fa-2x"></i>
-                        <i class="fa-solid fa-circle-pause fa-2x"></i>
-                        <i class="fa-solid fa-forward-step fa-2x"></i>
-                    </div>
-                    <div class="progress">
-                        <span id="current-time">00:00</span>
-                        <input type="range" min="0" max="212" value="0" class="progress-bar" id="progress-bar">
-                        <span>03:32</span>
-                    </div>
-                </div>  
-            </div>
-            <div class="password-section">
-                <p class="guess-text" style="font-weight: 600;">Hayoo!!!</p>
-                <p class="guess-text" style="font-weight: 600;">Tebak Passwordnya!</p>
-                <input type="text" id="password" readonly style="font-weight: bold;">
-                <div class="keypad">
-                    <button>7</button><button>8</button><button>9</button>
-                    <button>4</button><button>5</button><button>6</button>
-                    <button>1</button><button>2</button><button>3</button>
-                    <button>C</button><button>0</button><button>✔</button>
-                </div>
-            </div>
-        </div>
-    </div>
+  <iframe src="audio.html" style="display:none;"></iframe>
+  <!-- Background -->
+  <div class="night"></div>
 
-    <iframe src="audio.html" style="display:none;"></iframe>
+  <!-- Title -->
+  <h1 class="title"></h1>
 
+  <!-- Button -->
+  <div style="position: absolute; top: 60vh; width: 100%; display: flex; justify-content: center;">
+    <a href="flower.html" class="btn">
+      <svg height="24" width="24" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1" class="sparkle">
+        <path
+          d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
+        </path>
+      </svg>
 
-    <script>
-        const passwordField = document.getElementById('password');
-        const buttons = document.querySelectorAll('.keypad button');
-        const progressBar = document.getElementById('progress-bar');
-        const currentTimeDisplay = document.getElementById('current-time');
-        const songDuration = 212; // Total durasi dalam detik (05:25 = 5*60 + 25 = 325 detik)
-        let currentTime = 0;
-        let interval;
+      <span class="text">Open</span>
+    </a>
+  </div>
 
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                const value = button.textContent;
-                
-                if (value === 'C') {
-                    passwordField.value = '';
-                } else if (value === '✔') {
-                    if (passwordField.value === '020922') {
-                        // Jika password benar, arahkan ke index.html
-                        window.location.href = 'index.html';
-                    } else {
-                        alert('Password salah, silakan coba lagi!');
-                        passwordField.value = '';
-                    }
-                } else {
-                    if (passwordField.value.length < 6) {
-                        passwordField.value += value;
-                    }
-                }
-            });
-        });
-
-        // Fungsi untuk mengupdate waktu dan progress bar
-        function updateProgress() {
-            if (currentTime < songDuration) {
-                currentTime++;
-                progressBar.value = currentTime;
-
-                let minutes = Math.floor(currentTime / 60);
-                let seconds = currentTime % 60;
-                if (seconds < 10) seconds = '0' + seconds;
-
-                currentTimeDisplay.textContent = `${minutes}:${seconds}`;
-            } else {
-                // Reset ke 0 dan progress bar ke 0
-                currentTime = 0;
-                progressBar.value = 0;
-
-                // Reset tampilan waktu
-                currentTimeDisplay.textContent = '0:00';
-            }
-        }
-
-
-        // Mulai interval 1 detik
-        interval = setInterval(updateProgress, 1000);
-    </script>
+  <script src="js/index.js"></script>
 </body>
+
 </html>
